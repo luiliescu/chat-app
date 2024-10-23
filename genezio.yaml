@@ -30,8 +30,8 @@ frontend:
             - npm run dev
     sdk:
         language: ts
-    subdomain: lightyellow-those-fly
-name: chat-app
+    subdomain: lucian-chat-app
+name: lucian-chat-app
 region: eu-central-1
 services:
     databases:
