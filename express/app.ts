@@ -221,7 +221,7 @@ app.delete(
       return;
     }
 
-    res.json({ message: 'Convo added successfully', answer });
+    res.json({ message: 'Convo added successfully' });
     return;
   }
 );
