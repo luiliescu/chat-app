@@ -185,7 +185,43 @@ app.post(
 app.delete(
   '/conversations/:conversationId',
   async (req: Request, res: Response) => {
-    res.json({ message: 'not implemented' });
+    const { conversationId } = req.params;
+
+    if (!conversationId) {
+      console.error('Missing conversationId');
+      res.json({
+        message: 'Missing conversationId',
+        answer: 'Internal Server Error',
+      });
+      return;
+    }
+
+    if (!process.env['CHAT_APP_DATABASE_URL']) {
+      console.error('Missing process.env.CHAT_APP_DATABASE_URL:');
+      res.json({ message: 'Delete dropped', answer: 'Database not defined' });
+      return;
+    }
+
+    try {
+      await connectToDatabase();
+      let conversation = await Conversation.findOne({ conversationId });
+
+      if (!conversation) {
+        res.json({
+          message: 'Delete dropped',
+          answer: 'Conversation not found',
+        });
+        return;
+      }
+
+      await Conversation.findByIdAndDelete(conversationId);
+    } catch (error) {
+      console.error('Error delete', error);
+      res.json({ message: 'Delete dropped', answer: 'Internal Server Error' });
+      return;
+    }
+
+    res.json({ message: 'Convo added successfully', answer });
     return;
   }
 );
